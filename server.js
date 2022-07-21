@@ -19,7 +19,7 @@ app.use(express.static("public"));
     credentials: true
   }
 }); */
-const io = require('socket.io')(server, {cors: {origin: "*"}});
+const io = socket(server, {cors: {origin: "*"}});
 
 // Players array
 let users = [];
