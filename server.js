@@ -13,7 +13,7 @@ app.use(express.static("public"));
 // const io = socket(server);
 const io = require("socket.io")(server, {
   cors: {
-    origin: "https://example.com",
+    origin: "*",
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true
