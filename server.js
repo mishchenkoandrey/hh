@@ -10,19 +10,7 @@ const server = http.createServer(app);
 app.use(express.static("public"));
 
 // Socket setup
-// const io = socket(server);
-/* const io = require("socket.io")(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-    allowedHeaders: ["my-custom-header"],
-    credentials: true
-  }
-}); */
-// const io = socket(server, {cors: {origin: "*"}});
-const io = socket(server, {
-  origins: ["*"]
-});
+const io = socket(server);
 
 // Players array
 let users = [];
