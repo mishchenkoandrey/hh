@@ -147,8 +147,8 @@ body {
 
 #restart-btn {
   position: absolute;
-  right: 20%;
-  bottom: 16%;
+  right: 16%;
+  bottom: 10%;
 }
 
 #players-table img {

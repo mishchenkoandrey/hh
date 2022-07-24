@@ -100,6 +100,7 @@ document.getElementById("start-btn").addEventListener("click", () => {
     "current-player"
   ).innerHTML = `<p>Anyone can roll</p>`;
   socket.emit("join", currentPlayer);
+  document.getElementById("restart-btn").hidden = false;
 });
 
 document.getElementById("roll-button").addEventListener("click", () => {
@@ -176,7 +177,6 @@ socket.on("rollDice", (data, turn) => {
     ).innerHTML = `<p>${winner.name} has won!</p>`;
     document.getElementById("roll-button").hidden = true;
     document.getElementById("dice").hidden = true;
-    document.getElementById("restart-btn").hidden = false;
   }
 });
 
