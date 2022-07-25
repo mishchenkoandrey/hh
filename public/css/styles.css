@@ -15,9 +15,13 @@ body {
   left: 15%;
   height: 90vh;
   width: 90vh;
-  background: url("../images/board.png");
   background-size: contain;
   z-index: -1;
+  border-collapse: collapse;
+}
+
+.board td {
+  border: 1px solid #fff;
 }
 
 .container {
