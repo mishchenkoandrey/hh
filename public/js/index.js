@@ -21,27 +21,6 @@ const offsetY = side / 2 + 20;
 
 const images = [redPieceImg, bluePieceImg, yellowPieceImg, greenPieceImg];
 
-const ladders = [
-  [2, 23],
-  [4, 68],
-  [6, 45],
-  [20, 59],
-  [30, 96],
-  [52, 72],
-  [57, 96],
-  [71, 92],
-];
-
-const snakes = [
-  [98, 40],
-  [84, 58],
-  [87, 49],
-  [73, 15],
-  [56, 8],
-  [50, 5],
-  [43, 17],
-];
-
 class Player {
   constructor(id, name, pos, img) {
     this.id = id;
@@ -65,28 +44,7 @@ class Player {
   updatePos(num) {
     if (this.pos + num <= 99) {
       this.pos += num;
-      this.pos = this.isLadderOrSnake(this.pos + 1) - 1;
     }
-  }
-
-  isLadderOrSnake(pos) {
-    let newPos = pos;
-
-    for (let i = 0; i < ladders.length; i++) {
-      if (ladders[i][0] == pos) {
-        newPos = ladders[i][1];
-        break;
-      }
-    }
-
-    for (let i = 0; i < snakes.length; i++) {
-      if (snakes[i][0] == pos) {
-        newPos = snakes[i][1];
-        break;
-      }
-    }
-
-    return newPos;
   }
 }
 
