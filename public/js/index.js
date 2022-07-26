@@ -44,6 +44,8 @@ class Player {
   updatePos(num) {
     if (this.pos + num <= 99) {
       this.pos += num;
+    } else {
+      this.pos = 99;
     }
   }
 }
