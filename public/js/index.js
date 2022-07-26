@@ -39,6 +39,13 @@ class Player {
     let image = new Image();
     image.src = this.img;
     ctx.drawImage(image, xPos, yPos, 30, 40);
+    const xPosTable =
+    Math.floor(this.pos / 10) % 2 == 0
+      ? (this.pos % 10 + 1)
+      : 10 - ((this.pos % 10));
+    const yPosTable = 10 - (Math.floor(this.pos / 10));
+    const currentField = document.querySelector(`.board tr:nth-child(${yPosTable}) td:nth-child(${xPosTable})`);
+    currentField.setAttribute('style', 'background: red');
   }
 
   updatePos(num) {
