@@ -20,8 +20,14 @@ body {
   border-collapse: collapse;
 }
 
+.board tr {
+  height: 10%;
+}
+
 .board td {
+  width: 10%;
   border: 1px solid #fff;
+  text-align: center;
 }
 
 .container {

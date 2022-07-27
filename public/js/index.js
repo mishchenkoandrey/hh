@@ -5,19 +5,10 @@ socket.emit("joined");
 let players = []; // All players in the game
 let currentPlayer; // Player object for individual players
 
-let canvas = document.getElementById("canvas");
-canvas.width = document.documentElement.clientHeight * 0.9;
-canvas.height = document.documentElement.clientHeight * 0.9;
-let ctx = canvas.getContext("2d");
-
 const redPieceImg = "../images/red_piece.png";
 const bluePieceImg = "../images/blue_piece.png";
 const yellowPieceImg = "../images/yellow_piece.png";
 const greenPieceImg = "../images/green_piece.png";
-
-const side = canvas.width / 10;
-const offsetX = side / 2;
-const offsetY = side / 2 + 20;
 
 const images = [redPieceImg, bluePieceImg, yellowPieceImg, greenPieceImg];
 
@@ -32,22 +23,17 @@ class Player {
   }
 
   draw() {
-    let xPos =
-      Math.floor(this.pos / 10) % 2 == 0
-        ? (this.pos % 10) * side - 15 + offsetX
-        : canvas.width - ((this.pos % 10) * side + offsetX + 15);
-    let yPos = canvas.height - (Math.floor(this.pos / 10) * side + offsetY);
-
     let image = new Image();
     image.src = this.img;
-    ctx.drawImage(image, xPos, yPos, 30, 40);
+    image.width = 30;
+    image.height = 40;
     const xPosTable =
     Math.floor(this.pos / 10) % 2 == 0
       ? (this.pos % 10 + 1)
       : 10 - ((this.pos % 10));
     const yPosTable = 10 - (Math.floor(this.pos / 10));
     const currentField = document.querySelector(`.board tr:nth-child(${yPosTable}) td:nth-child(${xPosTable})`);
-    currentField.setAttribute('style', 'background: red');
+    currentField.appendChild(image);
   }
 
   updatePos(num) {
@@ -88,9 +74,10 @@ function rollDice() {
 }
 
 function drawPins() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
   fields.forEach((field) => {
-    field.removeAttribute('style');
+    if (field.firstChild) {
+      field.removeChild(field.firstChild);
+    }
   });
 
   players.forEach((player) => {
