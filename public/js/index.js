@@ -21,6 +21,8 @@ const offsetY = side / 2 + 20;
 
 const images = [redPieceImg, bluePieceImg, yellowPieceImg, greenPieceImg];
 
+const fields = document.querySelectorAll('.board td');
+
 class Player {
   constructor(id, name, pos, img) {
     this.id = id;
@@ -87,6 +89,9 @@ function rollDice() {
 
 function drawPins() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  fields.forEach((field) => {
+    field.removeAttribute('style');
+  });
 
   players.forEach((player) => {
     player.draw();
