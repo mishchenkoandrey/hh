@@ -169,3 +169,9 @@ body {
 #players-table td {
   padding-right: 20px;
 }
+
+.instruction {
+  color: azure;
+  font-size: 1.4rem;
+  font-family: "Roboto Slab", sans-serif;
+}

@@ -14,6 +14,18 @@ const images = [redPieceImg, bluePieceImg, yellowPieceImg, greenPieceImg];
 
 const fields = document.querySelectorAll('.board td');
 
+function rollDice() {
+  const number = Math.ceil(Math.random() * 6);
+  return number;
+}
+
+const generateBoard = () => {
+  const fieldValues = Array(100).fill(0).map((v) => rollDice());
+  fields.forEach((field, i, fields) => {
+    field.innerHTML = fieldValues[i];
+  });
+};
+
 class Player {
   constructor(id, name, pos, img) {
     this.id = id;
@@ -45,15 +57,17 @@ class Player {
   }
 }
 
+document.getElementById("generate-button").addEventListener("click", () => {
+  generateBoard();
+});
+
 document.getElementById("start-btn").addEventListener("click", () => {
   const name = document.getElementById("name").value;
   document.getElementById("name").disabled = true;
   document.getElementById("start-btn").hidden = true;
   document.getElementById("roll-button").hidden = false;
   currentPlayer = new Player(players.length, name, 0, images[players.length]);
-  document.getElementById(
-    "current-player"
-  ).innerHTML = `<p>Anyone can roll</p>`;
+  document.getElementById("current-player").innerHTML = 'Anyone can roll';
   socket.emit("join", currentPlayer);
   document.getElementById("restart-btn").hidden = false;
 });
@@ -67,11 +81,6 @@ document.getElementById("roll-button").addEventListener("click", () => {
     pos: currentPlayer.pos,
   });
 });
-
-function rollDice() {
-  const number = Math.ceil(Math.random() * 6);
-  return number;
-}
 
 function drawPins() {
   fields.forEach((field) => {
