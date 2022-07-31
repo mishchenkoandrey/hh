@@ -1,7 +1,9 @@
 // Making Connection
 const socket = io.connect();
 socket.emit("joined");
+socket.emit("generated");
 
+let fieldValues = [];
 let players = []; // All players in the game
 let currentPlayer; // Player object for individual players
 
@@ -15,16 +17,11 @@ const images = [redPieceImg, bluePieceImg, yellowPieceImg, greenPieceImg];
 const fields = document.querySelectorAll('.board td');
 
 function rollDice() {
-  const number = Math.ceil(Math.random() * 6);
+  const number = Math.ceil(Math.random() * 5);
   return number;
 }
 
-const generateBoard = () => {
-  const fieldValues = Array(100).fill(0).map((v) => rollDice());
-  fields.forEach((field, i, fields) => {
-    field.innerHTML = fieldValues[i];
-  });
-};
+const generateBoard = () => Array(100).fill(0).map((v) => rollDice());
 
 class Player {
   constructor(id, name, pos, img) {
@@ -39,13 +36,15 @@ class Player {
     image.src = this.img;
     image.width = 30;
     image.height = 40;
+    image.setAttribute('alt', `Player ${this.id}`);
+    image.classList.add('pin');
     const xPosTable =
     Math.floor(this.pos / 10) % 2 == 0
       ? (this.pos % 10 + 1)
       : 10 - ((this.pos % 10));
     const yPosTable = 10 - (Math.floor(this.pos / 10));
     const currentField = document.querySelector(`.board tr:nth-child(${yPosTable}) td:nth-child(${xPosTable})`);
-    currentField.appendChild(image);
+    currentField.append(image);
   }
 
   updatePos(num) {
@@ -57,8 +56,19 @@ class Player {
   }
 }
 
+const drawBoard = (values) => {
+  fields.forEach((field, i) => {
+    const image = new Image();
+    image.src = `../images/dice-board/dice-${values[i]}.svg`;
+    image.setAttribute('alt', values[i]);
+    image.classList.add('field');
+    field.append(image);
+  });
+};
+
 document.getElementById("generate-button").addEventListener("click", () => {
-  generateBoard();
+  fieldValues = generateBoard();
+  socket.emit("generate", fieldValues);
 });
 
 document.getElementById("start-btn").addEventListener("click", () => {
@@ -84,8 +94,8 @@ document.getElementById("roll-button").addEventListener("click", () => {
 
 function drawPins() {
   fields.forEach((field) => {
-    if (field.firstChild) {
-      field.removeChild(field.firstChild);
+    if (field.querySelector('.pin')) {
+      field.querySelectorAll('.pin').forEach((pin => pin.remove()));
     }
   });
 
@@ -95,6 +105,16 @@ function drawPins() {
 }
 
 // Listen for events
+socket.on("generate", (data) => {
+  drawBoard(data);
+});
+
+socket.on("generated", (data) => {
+  if (fieldValues.length) {
+    drawBoard(data);
+  };
+});
+
 socket.on("join", (data) => {
   players.push(new Player(players.length, data.name, data.pos, data.img));
   drawPins();

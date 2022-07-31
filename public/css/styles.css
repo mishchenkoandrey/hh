@@ -25,6 +25,7 @@ body {
 }
 
 .board td {
+  position: relative;
   width: 10%;
   border: 1px solid #fff;
   text-align: center;
@@ -174,4 +175,16 @@ body {
   color: azure;
   font-size: 1.4rem;
   font-family: "Roboto Slab", sans-serif;
+}
+
+.field {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.pin {
+  position: relative;
+  bottom: 15px;
 }
