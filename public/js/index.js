@@ -3,7 +3,7 @@ const socket = io.connect();
 socket.emit("joined");
 socket.emit("generated");
 
-let fieldValues = [];
+let fieldValues;
 let players = []; // All players in the game
 let currentPlayer; // Player object for individual players
 
@@ -58,11 +58,13 @@ class Player {
 
 const drawBoard = (values) => {
   fields.forEach((field, i) => {
-    const image = new Image();
+    const image = field.querySelector('.field-img') ?? new Image();
+    if (!field.querySelector('.field-img')) {
+      image.classList.add('field-img');
+      field.append(image);
+    }
     image.src = `../images/dice-board/dice-${values[i]}.svg`;
     image.setAttribute('alt', values[i]);
-    image.classList.add('field');
-    field.append(image);
   });
 };
 
@@ -75,9 +77,11 @@ document.getElementById("start-btn").addEventListener("click", () => {
   const name = document.getElementById("name").value;
   document.getElementById("name").disabled = true;
   document.getElementById("start-btn").hidden = true;
-  document.getElementById("roll-button").hidden = false;
   currentPlayer = new Player(players.length, name, 0, images[players.length]);
-  document.getElementById("current-player").innerHTML = 'Anyone can roll';
+  if (document.querySelector('.field-img')) {
+    document.getElementById("roll-button").hidden = false;
+    document.getElementById("current-player").innerHTML = 'Anyone can roll';
+  }
   socket.emit("join", currentPlayer);
   document.getElementById("restart-btn").hidden = false;
 });
@@ -90,6 +94,7 @@ document.getElementById("roll-button").addEventListener("click", () => {
     id: currentPlayer.id,
     pos: currentPlayer.pos,
   });
+  document.querySelector('.generate').hidden = true;
 });
 
 function drawPins() {
@@ -107,12 +112,17 @@ function drawPins() {
 // Listen for events
 socket.on("generate", (data) => {
   drawBoard(data);
+  if (currentPlayer) {
+    document.getElementById("roll-button").hidden = false;
+    document.getElementById("current-player").innerHTML = 'Anyone can roll';
+  }
 });
 
 socket.on("generated", (data) => {
+  fieldValues = data;
   if (fieldValues.length) {
     drawBoard(data);
-  };
+  }
 });
 
 socket.on("join", (data) => {
