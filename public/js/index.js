@@ -118,30 +118,12 @@ socket.on("generate", (data) => {
   }
 });
 
-socket.on("generated", (data) => {
-  fieldValues = data;
-  if (fieldValues.length) {
-    drawBoard(data);
-  }
-});
-
 socket.on("join", (data) => {
   players.push(new Player(players.length, data.name, data.pos, data.img));
   drawPins();
   document.getElementById(
     "players-table"
   ).innerHTML += `<tr><td>${data.name}</td><td><img src=${data.img} height=50 width=40></td></tr>`;
-});
-
-socket.on("joined", (data) => {
-  data.forEach((player, index) => {
-    players.push(new Player(index, player.name, player.pos, player.img));
-    console.log(player);
-    document.getElementById(
-      "players-table"
-    ).innerHTML += `<tr><td>${player.name}</td><td><img src=${player.img}></td></tr>`;
-  });
-  drawPins();
 });
 
 socket.on("rollDice", (data, turn) => {
