@@ -16,12 +16,12 @@ const images = [redPieceImg, bluePieceImg, yellowPieceImg, greenPieceImg];
 
 const fields = document.querySelectorAll('.board td');
 
-function rollDice() {
-  const number = Math.ceil(Math.random() * 5);
+function rollDice(maxValue = 6) {
+  const number = Math.ceil(Math.random() * maxValue);
   return number;
 }
 
-const generateBoard = () => Array(100).fill(0).map((v) => rollDice());
+const generateBoard = () => Array(100).fill(0).map((v) => rollDice(5));
 
 class Player {
   constructor(id, name, pos, img) {
