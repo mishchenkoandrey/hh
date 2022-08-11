@@ -137,7 +137,6 @@ socket.on("join", (data) => {
 socket.on("joined", (data) => {
   data.forEach((player, index) => {
     state.players.push(new Player(index, player.name, player.pos, player.img));
-    console.log(player);
     document.getElementById(
       "players-table"
     ).innerHTML += `<tr><td>${player.name}</td><td><img src=${player.img}></td></tr>`;
