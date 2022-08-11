@@ -40,6 +40,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("rollDice", (data) => {
+    console.log(data);
     users[data.id].pos = data.pos;
     const turn = (data.id + 1) % users.length;
     io.sockets.emit("rollDice", data, turn);

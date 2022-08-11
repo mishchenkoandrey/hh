@@ -3,9 +3,10 @@ const socket = io.connect();
 socket.emit("joined");
 socket.emit("generated");
 
-let fieldValues;
-let players = []; // All players in the game
-let currentPlayer; // Player object for individual players
+const state = {
+  fieldValues: [],
+  players: [],
+};
 
 const redPieceImg = "../images/red_piece.png";
 const bluePieceImg = "../images/blue_piece.png";
@@ -69,30 +70,30 @@ const drawBoard = (values) => {
 };
 
 document.getElementById("generate-button").addEventListener("click", () => {
-  fieldValues = generateBoard();
-  socket.emit("generate", fieldValues);
+  state.fieldValues = generateBoard();
+  socket.emit("generate", state.fieldValues);
 });
 
 document.getElementById("start-btn").addEventListener("click", () => {
   const name = document.getElementById("name").value;
   document.getElementById("name").disabled = true;
   document.getElementById("start-btn").hidden = true;
-  currentPlayer = new Player(players.length, name, 0, images[players.length]);
+  state.currentPlayer = new Player(state.players.length, name, 0, images[state.players.length]);
   if (document.querySelector('.field-img')) {
     document.getElementById("roll-button").hidden = false;
     document.getElementById("current-player").innerHTML = 'Anyone can roll';
   }
-  socket.emit("join", currentPlayer);
+  socket.emit("join", state.currentPlayer);
   document.getElementById("restart-btn").hidden = false;
 });
 
 document.getElementById("roll-button").addEventListener("click", () => {
   const num = rollDice();
-  currentPlayer.updatePos(num);
+  state.currentPlayer.updatePos(num);
   socket.emit("rollDice", {
     num: num,
-    id: currentPlayer.id,
-    pos: currentPlayer.pos,
+    id: state.currentPlayer.id,
+    pos: state.currentPlayer.pos,
   });
   document.querySelector('.generate').hidden = true;
 });
@@ -104,7 +105,7 @@ function drawPins() {
     }
   });
 
-  players.forEach((player) => {
+  state.players.forEach((player) => {
     player.draw();
   });
 }
@@ -112,21 +113,21 @@ function drawPins() {
 // Listen for events
 socket.on("generate", (data) => {
   drawBoard(data);
-  if (currentPlayer) {
+  if (state.currentPlayer) {
     document.getElementById("roll-button").hidden = false;
     document.getElementById("current-player").innerHTML = 'Anyone can roll';
   }
 });
 
 socket.on("generated", (data) => {
-  fieldValues = data;
-  if (fieldValues.length) {
+  state.fieldValues = data;
+  if (state.fieldValues.length) {
     drawBoard(data);
   }
 });
 
 socket.on("join", (data) => {
-  players.push(new Player(players.length, data.name, data.pos, data.img));
+  state.players.push(new Player(state.players.length, data.name, data.pos, data.img));
   drawPins();
   document.getElementById(
     "players-table"
@@ -135,7 +136,7 @@ socket.on("join", (data) => {
 
 socket.on("joined", (data) => {
   data.forEach((player, index) => {
-    players.push(new Player(index, player.name, player.pos, player.img));
+    state.players.push(new Player(index, player.name, player.pos, player.img));
     console.log(player);
     document.getElementById(
       "players-table"
@@ -145,15 +146,15 @@ socket.on("joined", (data) => {
 });
 
 socket.on("rollDice", (data, turn) => {
-  players[data.id].updatePos(data.num);
+  state.players[data.id].updatePos(data.num);
   document.getElementById("dice").src = `./images/dice/dice${data.num}.png`;
   drawPins();
 
-  if (turn != currentPlayer.id) {
+  if (turn != state.currentPlayer.id) {
     document.getElementById("roll-button").hidden = true;
     document.getElementById(
       "current-player"
-    ).innerHTML = `<p>It's ${players[turn].name}'s turn</p>`;
+    ).innerHTML = `<p>It's ${state.players[turn].name}'s turn</p>`;
   } else {
     document.getElementById("roll-button").hidden = false;
     document.getElementById(
@@ -162,9 +163,9 @@ socket.on("rollDice", (data, turn) => {
   }
 
   let winner;
-  for (let i = 0; i < players.length; i++) {
-    if (players[i].pos == 99) {
-      winner = players[i];
+  for (let i = 0; i < state.players.length; i++) {
+    if (state.players[i].pos == 99) {
+      winner = state.players[i];
       break;
     }
   }
