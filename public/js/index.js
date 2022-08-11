@@ -6,6 +6,7 @@ socket.emit("generated");
 const state = {
   fieldValues: [],
   players: [],
+  isStopThrow: true,
 };
 
 const redPieceImg = "../images/red_piece.png";
@@ -89,13 +90,19 @@ document.getElementById("start-btn").addEventListener("click", () => {
 
 document.getElementById("roll-button").addEventListener("click", () => {
   const num = rollDice();
-  state.currentPlayer.updatePos(num);
-  socket.emit("rollDice", {
-    num: num,
-    id: state.currentPlayer.id,
-    pos: state.currentPlayer.pos,
-  });
-  document.querySelector('.generate').hidden = true;
+  if (!state.isStopThrow) {
+    console.log(state);
+    state.currentPlayer.updatePos(num);
+    socket.emit("rollDice", {
+      num: num,
+      id: state.currentPlayer.id,
+      pos: state.currentPlayer.pos,
+    });
+    document.querySelector('.generate').hidden = true;
+    state.isStopThrow = true;
+  } else {
+    state.isStopThrow = false;
+  }
 });
 
 function drawPins() {
