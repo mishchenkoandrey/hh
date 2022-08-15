@@ -7,6 +7,7 @@ const state = {
   fieldValues: [],
   players: [],
   isStopThrow: true,
+  isStepCompleted: false,
 };
 
 const redPieceImg = "../images/red_piece.png";
@@ -59,14 +60,17 @@ class Player {
 }
 
 const drawBoard = (values) => {
-  fields.forEach((field, i) => {
+  fields.forEach((field, i, fields) => {
     const image = field.querySelector('.field-img') ?? new Image();
     if (!field.querySelector('.field-img')) {
       image.classList.add('field-img');
       field.append(image);
     }
-    image.src = `../images/dice-board/dice-${values[i]}.svg`;
-    image.setAttribute('alt', values[i]);
+    const fieldNumber = Math.ceil((fields.length - i) / 10) % 2 !== 0
+      ? Math.floor((fields.length - 1 - i) / 10) * 10 + (9 - (fields.length - 1 - i) % 10)
+      : fields.length - 1 - i;
+    image.src = `../images/dice-board/dice-${values[fieldNumber]}.svg`;
+    image.setAttribute('alt', values[fieldNumber]);
   });
 };
 
@@ -90,19 +94,27 @@ document.getElementById("start-btn").addEventListener("click", () => {
 
 document.getElementById("roll-button").addEventListener("click", () => {
   const num = rollDice();
+  
   if (!state.isStopThrow) {
-    console.log(state);
     state.currentPlayer.updatePos(num);
-    socket.emit("rollDice", {
-      num: num,
-      id: state.currentPlayer.id,
-      pos: state.currentPlayer.pos,
-    });
-    document.querySelector('.generate').hidden = true;
     state.isStopThrow = true;
-  } else {
+    state.isStepCompleted = true;
+  } else if (num <= state.fieldValues[state.currentPlayer.pos]) {
     state.isStopThrow = false;
+    state.isStepCompleted = false;
+  } else {
+    state.isStepCompleted = true;
   }
+
+  socket.emit("rollDice", {
+    num: num,
+    id: state.currentPlayer.id,
+    pos: state.currentPlayer.pos,
+    isStopThrow: state.isStopThrow,
+    isStepCompleted: state.isStepCompleted,
+  });
+  
+  document.querySelector('.generate').hidden = true;
 });
 
 function drawPins() {
@@ -119,6 +131,7 @@ function drawPins() {
 
 // Listen for events
 socket.on("generate", (data) => {
+  state.fieldValues = data;
   drawBoard(data);
   if (state.currentPlayer) {
     document.getElementById("roll-button").hidden = false;
@@ -152,7 +165,9 @@ socket.on("joined", (data) => {
 });
 
 socket.on("rollDice", (data, turn) => {
-  state.players[data.id].updatePos(data.num);
+  state.players[data.id].pos = data.pos;
+  state.isStopThrow = data.isStopThrow;
+  state.isStepCompleted = data.isStepCompleted;
   document.getElementById("dice").src = `./images/dice/dice${data.num}.png`;
   drawPins();
 
@@ -161,6 +176,7 @@ socket.on("rollDice", (data, turn) => {
     document.getElementById(
       "current-player"
     ).innerHTML = `<p>It's ${state.players[turn].name}'s turn</p>`;
+    state.isStepCompleted = false;
   } else {
     document.getElementById("roll-button").hidden = false;
     document.getElementById(
