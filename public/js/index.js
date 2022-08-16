@@ -172,7 +172,7 @@ socket.on("rollDice", (data, turn) => {
   document.getElementById("dice").src = `./images/dice/dice${data.num}.png`;
   drawPins();
 
-  if (turn != state.currentPlayer.id) {
+  if (!state.currentPlayer || turn != state.currentPlayer.id) {
     document.getElementById("roll-button").hidden = true;
     document.getElementById(
       "current-player"
