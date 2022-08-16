@@ -79,7 +79,8 @@ document.getElementById("generate-button").addEventListener("click", () => {
   socket.emit("generate", state.fieldValues);
 });
 
-document.getElementById("start-btn").addEventListener("click", () => {
+document.getElementById("name-form").addEventListener("submit", (e) => {
+  e.preventDefault();
   const name = document.getElementById("name").value;
   document.getElementById("name").disabled = true;
   document.getElementById("start-btn").hidden = true;
