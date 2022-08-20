@@ -10,8 +10,8 @@
     />
     <link rel="stylesheet" href="css/styles.css" />
   </head>
-  <body class="flex">
-    <div class="board-wrap">
+  <body class="flex ai-end nowrap-801">
+    <div class="board-wrap width-100 width-50-801">
       <table class="board">
         <tr>
           <td></td>
@@ -135,9 +135,9 @@
         </tr>
       </table>
     </div>
-    <div class="flex">
-      <div id="generate" class="flex">
-        <div class="instruction">Anyone can</div>
+    <div class="flex width-50-801 padding-top-1-801">
+      <div id="generate" class="flex width-100">
+        <div class="instruction padding-0-1">Anyone can</div>
         <button class="btn draw-border" id="generate-button">Generate board</button>
       </div>
       <div id="info-box" class="info-box">
@@ -152,13 +152,13 @@
           <button class="btn draw-border" id="start-btn">Join</button>
         </form>
       </div>
-      <div id="players-box" hidden>
+      <div id="players-box" class="width-100 padding-0-1" hidden>
         <h3>Players online:</h3>
         <table id="players-table" class="players-table">
           <tbody></tbody>
         </table>
       </div>
-      <div id="current-player" hidden></div>
+      <div id="current-player" class="padding-0-1" hidden></div>
       <button class="btn draw-border" id="roll-button" hidden>Roll</button>
       <div id="dice-wrap" class="dice-wrap" hidden>
         <img src="./images/dice/dice1.png" alt="" id="dice" />

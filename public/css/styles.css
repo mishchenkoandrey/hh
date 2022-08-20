@@ -9,7 +9,7 @@ body {
 }
 
 [hidden]{
-  display: none;
+  display: none!important;
 }
 
 .flex {
@@ -18,8 +18,20 @@ body {
   gap: 1em;
 }
 
+.ai-end {
+  align-items: end;
+}
+
 .gap-02 {
   gap: 0.2em;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.padding-0-1 {
+  padding: 0 1em;
 }
 
 .board-wrap {
@@ -209,7 +221,7 @@ body {
 .pin {
   position: relative;
   bottom: 1vw;
-  width: 3vw;
+  width: 2vw;
   height: auto;
 }
 
@@ -223,4 +235,18 @@ body {
 
 .dice {
   width: 40px;
+}
+
+@media (min-width: 801px) {
+  .nowrap-801 {
+    flex-wrap: nowrap;
+  }
+
+  .width-50-801 {
+    width: 50%;
+  }
+
+  .padding-top-1-801 {
+    padding-top: 1em;
+  }
 }
