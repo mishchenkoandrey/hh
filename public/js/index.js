@@ -25,6 +25,8 @@ function rollDice(maxValue = 6) {
 }
 
 const generateBoard = () => Array(100).fill(0).map((v) => rollDice(5));
+const pNextPlayer = document.createElement('p');
+pNextPlayer.textContent = 'Anyone can roll';
 
 class Player {
   constructor(id, name, pos, img) {
@@ -87,13 +89,19 @@ document.getElementById("name-form").addEventListener("submit", (e) => {
   state.currentPlayer = new Player(state.players.length, name, 0, images[state.players.length]);
   if (document.querySelector('.field-img')) {
     document.getElementById("roll-button").hidden = false;
-    document.getElementById("current-player").innerHTML = 'Anyone can roll';
+    document.getElementById("current-player").append(pNextPlayer);
   }
   socket.emit("join", state.currentPlayer);
+  document.getElementById("info-box").hidden = true;
   document.getElementById("restart-btn").hidden = false;
 });
 
 document.getElementById("roll-button").addEventListener("click", () => {
+  if (document.getElementById("current-player").children.length > 1) {
+    document.getElementById("current-player").children[0].remove();
+  }
+
+  state.isStepCompleted = true;
   const num = rollDice();
   
   if (!state.isStopThrow) {
@@ -104,6 +112,9 @@ document.getElementById("roll-button").addEventListener("click", () => {
     state.isStopThrow = false;
     state.isStepCompleted = false;
   } else {
+    const pShouldThrow = document.createElement('p');
+    pShouldThrow.textContent = `You should throw <= then field value (${state.fieldValues[state.currentPlayer.pos]})`;
+    document.getElementById("current-player").prepend(pShouldThrow);
     state.isStepCompleted = true;
   }
 
@@ -114,8 +125,6 @@ document.getElementById("roll-button").addEventListener("click", () => {
     isStopThrow: state.isStopThrow,
     isStepCompleted: state.isStepCompleted,
   });
-  
-  document.querySelector('.generate').hidden = true;
 });
 
 function drawPins() {
@@ -136,7 +145,7 @@ socket.on("generate", (data) => {
   drawBoard(data);
   if (state.currentPlayer) {
     document.getElementById("roll-button").hidden = false;
-    document.getElementById("current-player").innerHTML = 'Anyone can roll';
+    document.getElementById("current-player").append(pNextPlayer);
   }
 });
 
@@ -148,42 +157,57 @@ socket.on("generated", (data) => {
 });
 
 socket.on("join", (data) => {
+  document.getElementById("players-box").hidden = false;
+  document.getElementById("current-player").hidden = false;
   state.players.push(new Player(state.players.length, data.name, data.pos, data.img));
   drawPins();
-  document.getElementById(
-    "players-table"
-  ).innerHTML += `<tr><td>${data.name}</td><td><img src=${data.img} height=50 width=40></td></tr>`;
+  document.querySelector("#players-table tbody").innerHTML += `<tr class='flex gap-02'><td class='players-name'>${data.name}</td><td><img src=${data.img} class='table-pin'></td></tr>`;
 });
 
 socket.on("joined", (data) => {
-  data.forEach((player, index) => {
-    state.players.push(new Player(index, player.name, player.pos, player.img));
-    document.getElementById(
-      "players-table"
-    ).innerHTML += `<tr><td>${player.name}</td><td><img src=${player.img}></td></tr>`;
-  });
-  drawPins();
+  if (data.length) {
+    document.getElementById("players-box").hidden = false;
+    document.getElementById("current-player").hidden = false;
+    data.forEach((player, index) => {
+      state.players.push(new Player(index, player.name, player.pos, player.img));
+      document.querySelector("#players-table tbody").innerHTML += `<tr class='flex gap-02'><td class='players-name'>${player.name}</td><td><img src=${player.img} class='table-pin'></td></tr>`;
+    });
+    drawPins();
+  }
 });
 
 socket.on("rollDice", (data, turn) => {
   state.players[data.id].pos = data.pos;
   state.isStopThrow = data.isStopThrow;
   state.isStepCompleted = data.isStepCompleted;
-  document.getElementById("dice").src = `./images/dice/dice${data.num}.png`;
+
+  if (document.getElementById('dice-wrap')) {
+    document.getElementById('dice-wrap').remove();
+  }
+
+  const diceWrap = document.createElement('td');
+  diceWrap.id = 'dice-wrap';
+  const dice = document.createElement('img');
+  dice.src = `./images/dice/dice${data.num}.png`;
+  dice.alt = data.num;
+  dice.id = 'dice';
+  dice.classList.add('dice');
+  diceWrap.append(dice);
+  const currentPlayerTr = document.querySelector(`#players-table tr:nth-child(${data.id + 1})`);
+  currentPlayerTr.append(diceWrap);
   drawPins();
+  document.getElementById('generate').hidden = true;
 
   if (!state.currentPlayer || turn != state.currentPlayer.id) {
     document.getElementById("roll-button").hidden = true;
-    document.getElementById(
-      "current-player"
-    ).innerHTML = `<p>It's ${state.players[turn].name}'s turn</p>`;
     state.isStepCompleted = false;
   } else {
     document.getElementById("roll-button").hidden = false;
-    document.getElementById(
-      "current-player"
-    ).innerHTML = `<p>It's your turn</p>`;
   }
+
+  pNextPlayer.textContent = (!state.currentPlayer || turn != state.currentPlayer.id)
+    ? `It's ${state.players[turn].name}'s turn`
+    : "It's your turn";
 
   let winner;
   for (let i = 0; i < state.players.length; i++) {
@@ -194,11 +218,8 @@ socket.on("rollDice", (data, turn) => {
   }
 
   if (winner) {
-    document.getElementById(
-      "current-player"
-    ).innerHTML = `<p>${winner.name} has won!</p>`;
+    document.getElementById("current-player").innerHTML = `<p>${winner.name} has won!</p>`;
     document.getElementById("roll-button").hidden = true;
-    document.getElementById("dice").hidden = true;
   }
 });
 
