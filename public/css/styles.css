@@ -48,7 +48,6 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
   border-collapse: collapse;
 }
 
@@ -231,6 +230,18 @@ body {
 
 .dice {
   width: 40px;
+}
+
+.bright::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #58afd1;
+  opacity: .5;
 }
 
 @media (min-width: 801px) {

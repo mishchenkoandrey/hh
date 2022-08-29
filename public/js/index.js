@@ -19,6 +19,14 @@ const images = [redPieceImg, bluePieceImg, yellowPieceImg, greenPieceImg];
 
 const fields = document.querySelectorAll('.board td');
 
+const orderedFieldsNumbers = Array(100).fill(0)
+  .map((field, i, fields) => Math.ceil((fields.length - i) / 10) % 2 !== 0
+    ? Math.floor((fields.length - 1 - i) / 10) * 10 + (9 - (fields.length - 1 - i) % 10)
+    : fields.length - 1 - i);
+
+fields
+  .forEach((field, i) => field.setAttribute('data-index', orderedFieldsNumbers[i]));
+
 function rollDice(maxValue = 6) {
   const number = Math.ceil(Math.random() * maxValue);
   return number;
@@ -53,26 +61,20 @@ class Player {
   }
 
   updatePos(num) {
-    if (this.pos + num <= 99) {
-      this.pos += num;
-    } else {
-      this.pos = 99;
-    }
+    this.pos = num;
   }
 }
 
 const drawBoard = (values) => {
-  fields.forEach((field, i, fields) => {
+  fields.forEach((field, i) => {
     const image = field.querySelector('.field-img') ?? new Image();
     if (!field.querySelector('.field-img')) {
       image.classList.add('field-img');
       field.append(image);
     }
-    const fieldNumber = Math.ceil((fields.length - i) / 10) % 2 !== 0
-      ? Math.floor((fields.length - 1 - i) / 10) * 10 + (9 - (fields.length - 1 - i) % 10)
-      : fields.length - 1 - i;
-    image.src = `../images/dice-board/dice-${values[fieldNumber]}.svg`;
-    image.setAttribute('alt', values[fieldNumber]);
+
+    image.src = `../images/dice-board/dice-${values[field.dataset.index]}.svg`;
+    image.setAttribute('alt', values[field.dataset.index]);
   });
 };
 
@@ -105,26 +107,70 @@ document.getElementById("roll-button").addEventListener("click", () => {
   const num = rollDice();
   
   if (!state.isStopThrow) {
-    state.currentPlayer.updatePos(num);
-    state.isStopThrow = true;
-    state.isStepCompleted = true;
+    const availableFieldsNumbers = orderedFieldsNumbers
+      .filter((v) => v >= state.currentPlayer.pos && (v <= state.currentPlayer.pos + num));
+
+    const availableFields = availableFieldsNumbers
+      .map((v) => fields[orderedFieldsNumbers.indexOf(v)]);
+
+    const listen = (e) => {
+      state.currentPlayer.updatePos(Number(e.target.dataset.index));
+
+      fields
+        .forEach((field) => {
+          field.classList.remove('bright');
+          field.removeEventListener('click', listen);
+        });
+
+      state.isStopThrow = true;
+      state.isStepCompleted = true;
+
+      socket.emit("rollDice", {
+        num: num,
+        id: state.currentPlayer.id,
+        pos: state.currentPlayer.pos,
+        isStopThrow: state.isStopThrow,
+        isStepCompleted: state.isStepCompleted,
+      });
+    };
+
+    availableFields.forEach((field, i, fields) => {
+      field.classList.add('bright');
+      field.addEventListener('click', listen);
+    });
+
+    socket.emit("rollDice", {
+      num: num,
+      id: state.currentPlayer.id,
+      pos: state.currentPlayer.pos,
+      isStopThrow: state.isStopThrow,
+      isStepCompleted: state.isStepCompleted,
+    });
   } else if (num <= state.fieldValues[state.currentPlayer.pos]) {
     state.isStopThrow = false;
     state.isStepCompleted = false;
+    
+    socket.emit("rollDice", {
+      num: num,
+      id: state.currentPlayer.id,
+      pos: state.currentPlayer.pos,
+      isStopThrow: state.isStopThrow,
+      isStepCompleted: state.isStepCompleted,
+    });
   } else {
     const pShouldThrow = document.createElement('p');
     pShouldThrow.textContent = `You should throw <= then field value (${state.fieldValues[state.currentPlayer.pos]})`;
     document.getElementById("current-player").prepend(pShouldThrow);
     state.isStepCompleted = true;
+    
+    socket.emit("rollDice", {
+      num: num,
+      id: state.currentPlayer.id,
+      pos: state.currentPlayer.pos,
+      isStopThrow: state.isStopThrow,
+      isStepCompleted: state.isStepCompleted,
+    });
   }
-
-  socket.emit("rollDice", {
-    num: num,
-    id: state.currentPlayer.id,
-    pos: state.currentPlayer.pos,
-    isStopThrow: state.isStopThrow,
-    isStepCompleted: state.isStepCompleted,
-  });
 });
 
 function drawPins() {
