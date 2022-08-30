@@ -35,6 +35,8 @@ function rollDice(maxValue = 6) {
 const generateBoard = () => Array(100).fill(0).map((v) => rollDice(5));
 const pNextPlayer = document.createElement('p');
 pNextPlayer.textContent = 'Anyone can roll';
+const pChooseField = document.createElement('p');
+pChooseField.textContent = 'Choose one of the bright fields';
 
 class Player {
   constructor(id, name, pos, img) {
@@ -115,6 +117,8 @@ document.getElementById("roll-button").addEventListener("click", () => {
 
     const listen = (e) => {
       state.currentPlayer.updatePos(Number(e.target.dataset.index));
+      pChooseField.remove();
+      document.getElementById("current-player").append(pNextPlayer);
 
       fields
         .forEach((field) => {
@@ -138,6 +142,9 @@ document.getElementById("roll-button").addEventListener("click", () => {
       field.classList.add('bright');
       field.addEventListener('click', listen);
     });
+
+    pNextPlayer.remove();
+    document.getElementById("current-player").prepend(pChooseField);
 
     socket.emit("rollDice", {
       num: num,
