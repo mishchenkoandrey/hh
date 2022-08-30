@@ -134,7 +134,7 @@ document.getElementById("roll-button").addEventListener("click", () => {
       });
     };
 
-    availableFields.forEach((field, i, fields) => {
+    availableFields.forEach((field) => {
       field.classList.add('bright');
       field.addEventListener('click', listen);
     });
