@@ -122,7 +122,6 @@ document.getElementById("roll-button").addEventListener("click", () => {
 
       fields
         .forEach((field) => {
-          field.classList.remove('bright');
           field.removeEventListener('click', listen);
         });
 
@@ -130,7 +129,7 @@ document.getElementById("roll-button").addEventListener("click", () => {
       state.isStepCompleted = true;
 
       socket.emit("rollDice", {
-        num: num,
+        num,
         id: state.currentPlayer.id,
         pos: state.currentPlayer.pos,
         isStopThrow: state.isStopThrow,
@@ -139,7 +138,6 @@ document.getElementById("roll-button").addEventListener("click", () => {
     };
 
     availableFields.forEach((field) => {
-      field.classList.add('bright');
       field.addEventListener('click', listen);
     });
 
@@ -147,7 +145,8 @@ document.getElementById("roll-button").addEventListener("click", () => {
     document.getElementById("current-player").prepend(pChooseField);
 
     socket.emit("rollDice", {
-      num: num,
+      availableFieldsNumbers,
+      num,
       id: state.currentPlayer.id,
       pos: state.currentPlayer.pos,
       isStopThrow: state.isStopThrow,
@@ -158,7 +157,7 @@ document.getElementById("roll-button").addEventListener("click", () => {
     state.isStepCompleted = false;
     
     socket.emit("rollDice", {
-      num: num,
+      num,
       id: state.currentPlayer.id,
       pos: state.currentPlayer.pos,
       isStopThrow: state.isStopThrow,
@@ -171,7 +170,7 @@ document.getElementById("roll-button").addEventListener("click", () => {
     state.isStepCompleted = true;
     
     socket.emit("rollDice", {
-      num: num,
+      num,
       id: state.currentPlayer.id,
       pos: state.currentPlayer.pos,
       isStopThrow: state.isStopThrow,
@@ -250,6 +249,21 @@ socket.on("rollDice", (data, turn) => {
   currentPlayerTr.append(diceWrap);
   drawPins();
   document.getElementById('generate').hidden = true;
+
+  fields
+    .forEach((field) => {
+      field.classList.remove('bright');
+    });
+
+  if (data.availableFieldsNumbers) {
+    console.log(data);
+    const availableFields = data.availableFieldsNumbers
+      .map((v) => fields[orderedFieldsNumbers.indexOf(v)]);
+
+    availableFields.forEach((field) => {
+      field.classList.add('bright');
+    });
+  }
 
   if (!state.currentPlayer || turn != state.currentPlayer.id) {
     document.getElementById("roll-button").hidden = true;
