@@ -255,7 +255,6 @@ socket.on("rollDice", (data, turn) => {
     });
 
   if (data.availableFieldsNumbers) {
-    console.log(data);
     const availableFields = data.availableFieldsNumbers
       .map((v) => fields[orderedFieldsNumbers.indexOf(v)]);
 
@@ -264,7 +263,7 @@ socket.on("rollDice", (data, turn) => {
     });
   }
 
-  if (!state.currentPlayer || turn != state.currentPlayer.id) {
+  if (!state.currentPlayer || turn != state.currentPlayer.id || data.availableFieldsNumbers) {
     document.getElementById("roll-button").hidden = true;
     state.isStepCompleted = false;
   } else {
