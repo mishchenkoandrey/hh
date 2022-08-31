@@ -97,7 +97,6 @@ document.getElementById("name-form").addEventListener("submit", (e) => {
   }
   socket.emit("join", state.currentPlayer);
   document.getElementById("info-box").hidden = true;
-  document.getElementById("restart-btn").hidden = false;
 });
 
 document.getElementById("roll-button").addEventListener("click", () => {
@@ -285,6 +284,7 @@ socket.on("rollDice", (data, turn) => {
   if (winner) {
     document.getElementById("current-player").innerHTML = `<p>${winner.name} has won!</p>`;
     document.getElementById("roll-button").hidden = true;
+    document.getElementById("restart-btn").hidden = false;
   }
 });
 
