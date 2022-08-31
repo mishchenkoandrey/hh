@@ -105,7 +105,6 @@ document.getElementById("roll-button").addEventListener("click", () => {
     document.getElementById("current-player").children[0].remove();
   }
 
-  state.isStepCompleted = true;
   const num = rollDice();
   
   if (!state.isStopThrow) {
