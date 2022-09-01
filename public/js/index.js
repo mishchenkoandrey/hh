@@ -163,6 +163,7 @@ document.getElementById("roll-button").addEventListener("click", () => {
     });
   } else {
     const pShouldThrow = document.createElement('p');
+    console.log(state.fieldValues, state.currentPlayer.pos);
     pShouldThrow.textContent = `You should throw <= then field value (${state.fieldValues[state.currentPlayer.pos]})`;
     document.getElementById("current-player").prepend(pShouldThrow);
     state.isStepCompleted = true;
