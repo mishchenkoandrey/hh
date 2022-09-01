@@ -80,7 +80,7 @@ const drawBoard = (values) => {
   });
 };
 
-document.getElementById("generate-button").addEventListener("click", () => {
+document.getElementById("generate-btn").addEventListener("click", () => {
   state.fieldValues = generateBoard();
   socket.emit("generate", state.fieldValues);
 });
@@ -92,14 +92,14 @@ document.getElementById("name-form").addEventListener("submit", (e) => {
   document.getElementById("start-btn").hidden = true;
   state.currentPlayer = new Player(state.players.length, name, 0, images[state.players.length]);
   if (document.querySelector('.field-img')) {
-    document.getElementById("roll-button").hidden = false;
+    document.getElementById("roll-btn").hidden = false;
     document.getElementById("current-player").append(pNextPlayer);
   }
   socket.emit("join", state.currentPlayer);
   document.getElementById("info-box").hidden = true;
 });
 
-document.getElementById("roll-button").addEventListener("click", () => {
+document.getElementById("roll-btn").addEventListener("click", () => {
   if (document.getElementById("current-player").children.length > 1) {
     document.getElementById("current-player").children[0].remove();
   }
@@ -195,7 +195,7 @@ socket.on("generate", (data) => {
   state.fieldValues = data;
   drawBoard(data);
   if (state.currentPlayer) {
-    document.getElementById("roll-button").hidden = false;
+    document.getElementById("roll-btn").hidden = false;
     document.getElementById("current-player").append(pNextPlayer);
   }
 });
@@ -264,10 +264,10 @@ socket.on("rollDice", (data, turn) => {
   }
 
   if (!state.currentPlayer || turn != state.currentPlayer.id || data.availableFieldsNumbers) {
-    document.getElementById("roll-button").hidden = true;
+    document.getElementById("roll-btn").hidden = true;
     state.isStepCompleted = false;
   } else {
-    document.getElementById("roll-button").hidden = false;
+    document.getElementById("roll-btn").hidden = false;
   }
 
   pNextPlayer.textContent = (!state.currentPlayer || turn != state.currentPlayer.id)
@@ -284,7 +284,7 @@ socket.on("rollDice", (data, turn) => {
 
   if (winner) {
     document.getElementById("current-player").innerHTML = `<p>${winner.name} has won!</p>`;
-    document.getElementById("roll-button").hidden = true;
+    document.getElementById("roll-btn").hidden = true;
     document.getElementById("restart-btn").hidden = false;
   }
 });
