@@ -54,7 +54,7 @@ class Player {
     image.setAttribute('alt', `Player ${this.id}`);
     image.classList.add('pin');
 
-    const xPosTable = Math.floor(this.pos / 10) % 2 == 0
+    const xPosTable = Math.floor(this.pos / 10) % 2 === 0
       ? (this.pos % 10 + 1)
       : 10 - ((this.pos % 10));
 
