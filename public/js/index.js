@@ -53,10 +53,11 @@ class Player {
     image.height = 40;
     image.setAttribute('alt', `Player ${this.id}`);
     image.classList.add('pin');
-    const xPosTable =
-    Math.floor(this.pos / 10) % 2 == 0
+
+    const xPosTable = Math.floor(this.pos / 10) % 2 == 0
       ? (this.pos % 10 + 1)
       : 10 - ((this.pos % 10));
+
     const yPosTable = 10 - (Math.floor(this.pos / 10));
     const currentField = document.querySelector(`.board tr:nth-child(${yPosTable}) td:nth-child(${xPosTable})`);
     currentField.append(image);
@@ -70,6 +71,7 @@ class Player {
 const drawBoard = (values) => {
   fields.forEach((field, i) => {
     const image = field.querySelector('.field-img') ?? new Image();
+
     if (!field.querySelector('.field-img')) {
       image.classList.add('field-img');
       field.append(image);
@@ -91,10 +93,12 @@ document.getElementById("name-form").addEventListener("submit", (e) => {
   document.getElementById("name").disabled = true;
   document.getElementById("start-btn").hidden = true;
   state.currentPlayer = new Player(state.players.length, name, 0, images[state.players.length]);
+  
   if (document.querySelector('.field-img')) {
     document.getElementById("roll-btn").hidden = false;
     document.getElementById("current-player").append(pNextPlayer);
   }
+
   socket.emit("join", state.currentPlayer);
   document.getElementById("info-box").hidden = true;
 });
@@ -194,6 +198,7 @@ function drawPins() {
 socket.on("generate", (data) => {
   state.fieldValues = data;
   drawBoard(data);
+
   if (state.currentPlayer) {
     document.getElementById("roll-btn").hidden = false;
     document.getElementById("current-player").append(pNextPlayer);
@@ -202,6 +207,7 @@ socket.on("generate", (data) => {
 
 socket.on("generated", (data) => {
   state.fieldValues = data;
+
   if (state.fieldValues.length) {
     drawBoard(data);
   }
@@ -219,10 +225,12 @@ socket.on("joined", (data) => {
   if (data.length) {
     document.getElementById("players-box").hidden = false;
     document.getElementById("current-player").hidden = false;
+
     data.forEach((player, index) => {
       state.players.push(new Player(index, player.name, player.pos, player.img));
       document.querySelector("#players-table tbody").innerHTML += `<tr class='flex gap-02'><td class='players-name'>${player.name}</td><td><img src=${player.img} class='table-pin'></td></tr>`;
     });
+
     drawPins();
   }
 });
