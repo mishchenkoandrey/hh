@@ -9,8 +9,6 @@ class Player {
   draw() {
     const image = new Image();
     image.src = this.img;
-    image.width = 30;
-    image.height = 40;
     image.setAttribute('alt', `Player ${this.id}`);
     image.classList.add('pin');
 
