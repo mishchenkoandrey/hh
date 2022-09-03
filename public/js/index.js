@@ -47,7 +47,7 @@ class Player {
   }
 
   draw() {
-    let image = new Image();
+    const image = new Image();
     image.src = this.img;
     image.width = 30;
     image.height = 40;
@@ -274,16 +274,8 @@ socket.on("rollDice", (data, turn) => {
     ? `It's ${state.players[turn].name}'s turn`
     : "It's your turn";
 
-  let winner;
-  for (let i = 0; i < state.players.length; i++) {
-    if (state.players[i].pos == 99) {
-      winner = state.players[i];
-      break;
-    }
-  }
-
-  if (winner) {
-    document.getElementById("current-player").innerHTML = `<p>${winner.name} has won!</p>`;
+  if (state.players[data.id].pos === 99) {
+    document.getElementById("current-player").innerHTML = `<p>${state.players[data.id].name} has won!</p>`;
     document.getElementById("roll-btn").hidden = true;
     document.getElementById("restart-btn").hidden = false;
   }
