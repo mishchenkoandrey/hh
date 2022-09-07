@@ -60,6 +60,7 @@ body {
   width: 10%;
   border: 1px solid #fff;
   text-align: center;
+  font-size: 0;
 }
 
 .board td:nth-child(n + 2) {
@@ -195,8 +196,8 @@ body {
   width: 30px;
 }
 
-#players-table td {
-  padding-right: 20px;
+.players-table td {
+  margin-right: 20px;
 }
 
 .instruction {
@@ -213,11 +214,16 @@ body {
   background: #fff;
 }
 
-.pin {
-  position: relative;
-  bottom: 1vw;
-  width: 2vw;
-  height: auto;
+.pin use {
+  transform: scale(.1);
+}
+
+.pin-wrap {
+  width: 46px;
+}
+
+.pin-wrap .pin {
+  display: block;
 }
 
 .dice-wrap img {

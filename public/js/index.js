@@ -1,4 +1,5 @@
 import Player from './Player.js';
+import makePin from './makePin.js';
 
 // Making Connection
 const socket = io.connect();
@@ -11,13 +12,6 @@ const state = {
   isStopThrow: true,
   isStepCompleted: false,
 };
-
-const redPieceImg = "../images/red_piece.png";
-const bluePieceImg = "../images/blue_piece.png";
-const yellowPieceImg = "../images/yellow_piece.png";
-const greenPieceImg = "../images/green_piece.png";
-
-const images = [redPieceImg, bluePieceImg, yellowPieceImg, greenPieceImg];
 
 const fields = document.querySelectorAll('.board td');
 
@@ -33,6 +27,13 @@ function rollDice(maxValue = 6) {
   const number = Math.ceil(Math.random() * maxValue);
   return number;
 }
+const chooseColor = () => {
+  const red = Math.round(Math.random() * 255);
+  const green = Math.round(Math.random() * 255);
+  const blue = Math.round(Math.random() * 255);
+
+  return `rgb(${red}, ${green}, ${blue})`;
+};
 
 const generateBoard = () => Array(100).fill(0).map((v) => rollDice(5));
 const pNextPlayer = document.createElement('p');
@@ -64,7 +65,7 @@ document.getElementById("name-form").addEventListener("submit", (e) => {
   const name = document.getElementById("name").value;
   document.getElementById("name").disabled = true;
   document.getElementById("start-btn").hidden = true;
-  state.currentPlayer = new Player(state.players.length, name, 0, images[state.players.length]);
+  state.currentPlayer = new Player(state.players.length, name, 0, chooseColor());
   
   if (document.querySelector('.field-img')) {
     document.getElementById("roll-btn").hidden = false;
@@ -162,9 +163,31 @@ function drawPins() {
   });
 
   state.players.forEach((player) => {
-    player.draw();
+    const playersOnCurrentField = state.players
+      .filter((p) => p.pos === player.pos).length;
+
+    const fieldDenom = playersOnCurrentField < 2
+      ? 2
+      : playersOnCurrentField;
+
+    player.draw(fieldDenom);
   });
 }
+
+const drawPlayersBoxPin = (player) => {
+  const tr = document.createElement('tr');
+  tr.classList.add('flex', 'gap-02');
+  const nameTd = document.createElement('td');
+  nameTd.classList.add('players-name');
+  nameTd.innerHTML = player.name;
+  tr.append(nameTd);
+  const pinTd = document.createElement('td');
+  pinTd.classList.add('pin-wrap');
+  const pinSvg = makePin(player.color);
+  pinTd.append(pinSvg);
+  tr.append(pinTd);
+  document.querySelector("#players-table tbody").append(tr);
+};
 
 // Listen for events
 socket.on("generate", (data) => {
@@ -188,9 +211,9 @@ socket.on("generated", (data) => {
 socket.on("join", (data) => {
   document.getElementById("players-box").hidden = false;
   document.getElementById("current-player").hidden = false;
-  state.players.push(new Player(state.players.length, data.name, data.pos, data.img));
+  state.players.push(new Player(state.players.length, data.name, data.pos, data.color));
   drawPins();
-  document.querySelector("#players-table tbody").innerHTML += `<tr class='flex gap-02'><td class='players-name'>${data.name}</td><td><img src=${data.img} class='table-pin'></td></tr>`;
+  drawPlayersBoxPin(data);
 });
 
 socket.on("joined", (data) => {
@@ -199,8 +222,8 @@ socket.on("joined", (data) => {
     document.getElementById("current-player").hidden = false;
 
     data.forEach((player, index) => {
-      state.players.push(new Player(index, player.name, player.pos, player.img));
-      document.querySelector("#players-table tbody").innerHTML += `<tr class='flex gap-02'><td class='players-name'>${player.name}</td><td><img src=${player.img} class='table-pin'></td></tr>`;
+      state.players.push(new Player(index, player.name, player.pos, player.color));
+      drawPlayersBoxPin(player);
     });
 
     drawPins();
