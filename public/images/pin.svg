@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg1"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="1.25.svg">
+  <title
+     id="title3002">1.26 Перегон скота</title>
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1"
+     inkscape:cx="511.36559"
+     inkscape:cy="212.83017"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1024"
+     inkscape:window-x="-4"
+     inkscape:window-y="-4"
+     inkscape:window-maximized="1"
+     inkscape:snap-bbox="true"
+     inkscape:bbox-paths="true"
+     inkscape:bbox-nodes="true"
+     inkscape:snap-bbox-edge-midpoints="true"
+     inkscape:snap-bbox-midpoints="true"
+     inkscape:object-paths="true"
+     inkscape:snap-intersection-paths="true"
+     inkscape:object-nodes="true"
+     inkscape:snap-smooth-nodes="true" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>1.26 Перегон скота</dc:title>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by-sa/3.0/" />
+        <dc:description>ГОСТ Р 52290-2004
+Размеры и пропорции по типоразмеру I</dc:description>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by-sa/3.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#ShareAlike" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-491.13214)">
+    <path
+       sodipodi:nodetypes="scccscccsscsscssssccsssscs"
+       inkscape:connector-curvature="0"
+       d="m 200.65255,645.57588 c 5.08873,8.81394 1.55904,11.23479 8.69523,15.35488 9.04856,5.22418 33.02852,4.58289 35.44943,19.04968 l 6.98907,41.76508 c 0.70832,4.2328 4.51638,7.2348 8.79756,6.9354 4.58972,-0.3209 8.05023,-4.3018 7.72929,-8.8915 l -5.23484,-74.86159 -23.24462,-28.70471 0,-51.5051 c 0,-9.20185 -7.45956,-16.6614 -16.6614,-16.6614 l -123.6451,4e-5 -7.69686,43.65139 c -1.18237,6.70554 -7.00851,11.59425 -13.8175,11.59425 l -35.14192,0 13.29951,46.38089 c 2.69585,9.40151 11.29324,15.88011 21.07363,15.88011 l 24.47543,10e-6 c 7.74891,0 14.03064,6.28173 14.03064,14.03064 l 0,40.77657 0,0 c 0,4.6009 3.72978,8.3307 8.33071,8.3307 4.60091,0 8.33069,-3.7298 8.33069,-8.3307 l 0,-53.06983 c 0,-2.85973 1.73584,-5.43322 4.3873,-6.50448 l 49.36382,-19.94428 c 7.89392,-3.18935 13.11049,2.33468 14.48993,4.72395 z"
+       style="opacity:1;color:currentColor;fill:currentColor;fill-opacity:1;stroke:none;stroke-width:9.57089520000000070;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path6682" />
+    <path
+       id="path6684"
+       d="m 200.56429,663.34363 -22.58058,53.19039 c -1.79772,4.2352 0.17681,9.1089 4.41198,10.9067 4.23517,1.7977 9.13632,-0.1768 10.93404,-4.412 l 19.94984,-46.96981 -12.71528,-12.71528 z"
+       style="opacity:1;color:currentColor;fill:currentColor;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:connector-curvature="0" />
+    <path
+       sodipodi:nodetypes="csccccc"
+       inkscape:connector-curvature="0"
+       d="m 78.36632,723.35602 c -1.64882,4.2953 -6.4675,6.4407 -10.76283,4.7919 -4.29532,-1.6488 -6.44074,-6.4675 -4.79192,-10.7628 l 0,0 15.85315,-41.29883 17.84677,0 z"
+       style="opacity:1;color:currentColor;fill:currentColor;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:3.54299997999999980;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path6686" />
+    <path
+       sodipodi:nodetypes="scccssccssccsscccsccccccs"
+       inkscape:connector-curvature="0"
+       id="path6688"
+       d="m 29.12728,500.20992 c -0.86843,0.0983 -1.62352,0.7214 -1.86344,1.61681 l -5.34371,19.92243 -8.16627,2.41152 c -2.68361,0.71907 -4.549,3.1409 -4.549,5.91918 0,3.39015 2.74826,6.13841 6.13841,6.13841 l 5.26149,0 10.13934,53.98512 c 0.23488,1.21211 1.29518,2.13748 2.57594,2.13748 l 44.72269,0 c 1.28077,0 2.34106,-0.92537 2.57594,-2.13748 l 10.13934,-53.98512 5.26149,0 c 3.39015,0 6.13841,-2.74826 6.13841,-6.13841 0,-2.77828 -1.86539,-5.20011 -4.549,-5.91918 l -8.16627,-2.41152 -5.34371,-19.92243 c -0.31336,-1.16951 -1.51604,-1.84797 -2.68555,-1.5346 -0.75654,0.20272 -1.3319,0.77806 -1.5346,1.5346 l -5.34371,19.92243 -37.70737,0 -5.34371,-19.92243 c -0.20271,-0.75654 -0.77806,-1.33188 -1.5346,-1.5346 -0.14619,-0.0392 -0.29305,-0.0735 -0.43846,-0.0822 -0.12723,-0.008 -0.25958,-0.014 -0.38365,0 z"
+       style="opacity:1;color:currentColor;fill:currentColor;fill-opacity:1;stroke:none;stroke-width:1px;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+  </g>
+</svg>
