@@ -23,7 +23,7 @@ const orderedFieldsNumbers = Array(100).fill(0)
 fields
   .forEach((field, i) => field.setAttribute('data-index', orderedFieldsNumbers[i]));
 
-function rollDice(maxValue = 6) {
+const rollDice = (maxValue = 6) => {
   const number = Math.ceil(Math.random() * maxValue);
   return number;
 }
@@ -154,7 +154,7 @@ document.getElementById("roll-btn").addEventListener("click", () => {
   }
 });
 
-function drawPins() {
+const drawPins = () => {
   fields.forEach((field) => {
     if (field.querySelector('.pin')) {
       field.querySelectorAll('.pin').forEach((pin => pin.remove()));
