@@ -210,7 +210,7 @@ socket.on("generated", (data) => {
 socket.on("join", (data) => {
   document.getElementById("players-box").hidden = false;
   document.getElementById("current-player").hidden = false;
-  state.players.push(new Player(state.players.length, data.name, data.pos, data.color));
+  state.players = [...state.players, new Player(state.players.length, data.name, data.pos, data.color)];
   drawPins();
   drawPlayersBoxPin(data);
 });
@@ -221,7 +221,7 @@ socket.on("joined", (data) => {
     document.getElementById("current-player").hidden = false;
 
     data.forEach((player, index) => {
-      state.players.push(new Player(index, player.name, player.pos, player.color));
+      state.players = [...state.players, new Player(index, player.name, player.pos, player.color)];
       drawPlayersBoxPin(player);
     });
 
