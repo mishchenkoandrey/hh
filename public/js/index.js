@@ -63,8 +63,6 @@ document.getElementById("generate-btn").addEventListener("click", () => {
 document.getElementById("name-form").addEventListener("submit", (e) => {
   e.preventDefault();
   const name = document.getElementById("name").value;
-  document.getElementById("name").disabled = true;
-  document.getElementById("start-btn").hidden = true;
   state.currentPlayer = new Player(state.players.length, name, 0, chooseColor());
   
   if (document.querySelector('.field-img')) {
@@ -73,7 +71,7 @@ document.getElementById("name-form").addEventListener("submit", (e) => {
   }
 
   socket.emit("join", state.currentPlayer);
-  document.getElementById("info-box").hidden = true;
+  document.getElementById("name-form").hidden = true;
 });
 
 document.getElementById("roll-btn").addEventListener("click", () => {
