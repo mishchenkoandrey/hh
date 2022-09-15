@@ -58,6 +58,7 @@ const drawBoard = (values) => {
 document.getElementById("generate-btn").addEventListener("click", () => {
   state.fieldValues = generateBoard();
   socket.emit("generate", state.fieldValues);
+  localStorage.setItem('isGameStarted', 'true');
 });
 
 document.getElementById("name-form").addEventListener("submit", (e) => {
@@ -72,6 +73,7 @@ document.getElementById("name-form").addEventListener("submit", (e) => {
 
   socket.emit("join", state.currentPlayer);
   document.getElementById("name-form").hidden = true;
+  localStorage.setItem('isGameStarted', 'true');
 });
 
 document.getElementById("roll-btn").addEventListener("click", () => {
@@ -288,4 +290,11 @@ document.getElementById("restart-btn").addEventListener("click", () => {
 
 socket.on("restart", () => {
   window.location.reload();
+});
+
+window.addEventListener('load', () => {
+  if (localStorage.isGameStarted) {
+    socket.emit("restart");
+    localStorage.clear();
+  }
 });
