@@ -238,6 +238,10 @@ body {
   width: 40px;
 }
 
+.bright {
+  cursor: pointer;
+}
+
 .bright::before {
   content: '';
   display: block;
