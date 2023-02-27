@@ -1,3 +1,3 @@
 # Multiplayer Hitch
 
-[hitch-hiking.herokuapp.com/](https://hitch-hiking.herokuapp.com/)
+[hitch.onrender.com/](https://hitch.onrender.com/)
